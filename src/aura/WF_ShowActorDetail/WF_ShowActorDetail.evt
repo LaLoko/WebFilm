@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="WF_ShowActorDetail">
+    <aura:attribute name="showActorDetail" type="Boolean" access="public"/>
+    <aura:attribute name="actor" type="object" access="public"/>
+</aura:event>

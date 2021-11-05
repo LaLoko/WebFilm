@@ -1,0 +1,143 @@
+<aura:component description="WF_MovieDetail" controller="WF_InternalController">
+    <aura:attribute name="movie" type="object" access="public"/>
+    <aura:attribute name="movieReviews" type="object[]" access="public"/>
+    <aura:attribute name="reviewText" type="String" access="public"/>
+    <aura:attribute name="score" type="Integer" access="public" default="0"/>
+    <aura:attribute name="actorPage" type="Integer" access="public"/>
+    <aura:attribute name="isFav" type="Boolean" access="public"/>
+    <aura:attribute name="isBlack" type="Boolean" access="public"/>
+    <aura:attribute name="isFavOnClose" type="Boolean" access="public"/>
+    <aura:attribute name="isBlackOnClose" type="Boolean" access="public"/>
+    <aura:attribute name="searchKey" type="String" access="public"/>
+    <aura:attribute name="userFilms" type="object[]" access="public"/>
+    <aura:attribute name="showDeleteModal" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="reviewToDel" type="object" access="public"/>
+
+    <aura:attribute name="fromFav" type="Boolean" access="public"/>
+    <aura:attribute name="fromBlack" type="Boolean" access="public"/>
+    <aura:attribute name="fromMain" type="Boolean" access="public"/>
+    <aura:attribute name="preScore" type="Integer" access="public"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="WF_GetNewReviews" event="c:WF_GetNewReviews" action="{!c.refreshReviews}"/>
+    <aura:handler event="c:ShowDeleteModal" action="{!c.openDeleteModal}"/>
+
+    <aura:registerEvent name="WF_ShowMovieDetail" type="c:WF_ShowMovieDetail"/>
+    <aura:registerEvent name="WF_ShowActorDetail" type="c:WF_ShowActorDetail"/>
+    <aura:registerEvent name="WF_GetMoviesAndActors" type="c:WF_GetMoviesAndActors"/>
+    <aura:registerEvent name="WF_FavOrBlackChanged" type="c:WF_FavOrBlackChanged"/>
+
+
+    <aura:if isTrue="{!v.showDeleteModal == true}">
+        <c:WF_ComentDeleteConfirmation review="{!v.reviewToDel}"/>
+    </aura:if>
+    <div class="slds-card slds-m-top_medium slds-m-bottom_medium">
+
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+            <lightning:layout>
+                <lightning:layoutItem padding="20px">
+                    <aura:if isTrue="{!v.movie.movie.Avatar__c != 'https://image.tmdb.org/t/p/originalnull'}">
+                        <img src="{!v.movie.movie.Avatar__c}" style="max-height:600px;"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.movie.movie.Avatar__c == 'https://image.tmdb.org/t/p/originalnull'}">
+                        <img src="https://topperoo.com/wp-content/uploads/2017/07/Cake-Wrap-Film-Strip-Icing-Design.jpg"
+                             style="max-height:600px;"/>
+                    </aura:if>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="10">
+                    <div>
+                        <lightning:buttonIcon class="slds-button slds-button_icon slds-float_right"
+                                              size="large" iconName="utility:close"
+                                              title="Close" alternativeText="Close window"
+                                              onclick="{!c.closeMovieDetailModal}"/>
+                    </div>
+                    <div class="slds-text slds-float_right slds-m-right_medium">
+                        <h3>
+                        {!v.movie.movie.Rate__c}&nbsp;&nbsp;
+                            <lightning:icon iconName="utility:rating"/>
+
+                        </h3>
+                    </div>
+                    <aura:if isTrue="{!v.movie.movie.isFav__c == false}">
+                        <button class="slds-button slds-button_neutral slds-float_right
+                        slds-m-right_medium slds-m-left_medium" onclick="{!c.addToFav}">Add to favourites
+                        </button>
+                    </aura:if>
+                    <aura:if isTrue="{!v.movie.movie.isFav__c}">
+                        <button class="slds-button slds-button_success slds-float_right
+                         slds-m-right_medium slds-m-left_medium" onclick="{!c.deleteFromFav}">Delete from favourites
+                        </button>
+                    </aura:if>
+
+                    <aura:if isTrue="{!v.movie.movie.isBlack__c == false}">
+                        <button class="slds-button slds-button_text-destructive slds-float_right"
+                                onclick="{!c.addToBlack}">Add to blacklist
+                        </button>
+                    </aura:if>
+                    <aura:if isTrue="{!v.movie.movie.isBlack__c}">
+                        <button class="slds-button slds-button_destructive slds-float_right"
+                                onclick="{!c.deleteFromBlack}">Remove from blacklist
+                        </button>
+                    </aura:if>
+                    <div style="margin-left:25px">
+                        <div class="slds-text-title_bold slds-m-top_large">
+                            <h1 style="font-size:26px">{!v.movie.movie.Name}</h1>
+                            <h1>{!v.movie.movie.orginal_title__c}</h1>
+                        </div>
+                        <div class="slds-text-align_left">
+                            <h3><br/><b>Production&nbsp;date:</b>&nbsp;<lightning:formattedDateTime value="{!v.movie.movie.Production_Date__c}"/></h3>
+                            <aura:if isTrue="{!v.movie.genres != null}">
+                                <h3><b>Genres&nbsp;:&nbsp;</b>{!v.movie.genres}</h3>
+                            </aura:if>
+                            <aura:if isTrue="{!v.movie.genres == null}">
+                                <h3><b>Genres&nbsp;:&nbsp;</b>{!v.movie.movie.Generes__c}</h3>
+                            </aura:if>
+                            <h3><b>Production</b></h3>
+                            <aura:iteration items="{!v.movie.companies}" var="item">
+                                <h3>{!item}</h3>
+                            </aura:iteration>
+
+
+                            <h3 style="text-align: justify;text-justify: auto;margin-right:30rem"><br/>{!v.movie.movie.Overview__c}</h3>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <aura:if isTrue="{!v.movie.video != null}">
+            <iframe class="slds-m-top_large" width="100%" height="480" src="{!v.movie.video}"/>
+            </aura:if>
+
+            <aura:if isTrue="{!v.movie.actors.length > 0}">
+                <div class="slds-card actors">
+                    <c:WF_ActorList actorList="{!v.movie.actors}" page="{!v.actorPage}"/>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.movieReviews.length > 0}">
+                <lightning:card title="Reviews" class="width:100%">
+                    <div class="slds-scrollable_x max-height:600px;">
+                        <aura:iteration items="{!v.movieReviews}" var="review">
+                            <c:WF_ReviewItem review="{!review}"/>
+                        </aura:iteration>
+                    </div>
+                </lightning:card>
+            </aura:if>
+            <aura:if isTrue="{!v.movieReviews.length == 0}">
+            <lightning:card title="Share your opinion">
+                <div class="slds-card">
+                    <c:WF_Score value="{!v.score}" readonly="false"/>
+                </div>
+                <div>
+                    <div class="slds-card">
+                        <lightning:textarea class="textArea" value="{!v.reviewText}" label="Comment down below" placeholder="Type here..."/>
+                    </div>
+                    <div class="slds-card">
+                        <lightning:button class="slds-float_right shareButton" onclick="{!c.addReview}" label="Share" variant="brand"/>
+                    </div>
+                </div>
+            </lightning:card>
+            </aura:if>
+        </div>
+    </div>
+    <c:Spinner aura:id="spinner"/>
+</aura:component>

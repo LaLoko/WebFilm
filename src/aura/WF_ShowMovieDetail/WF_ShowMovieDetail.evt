@@ -1,0 +1,7 @@
+<aura:event type="COMPONENT" description="WF_ShowMovieDetail">
+    <aura:attribute name="showMovieDetail" type="Boolean" access="public"/>
+    <aura:attribute name="movie" type="object" access="public"/>
+    <aura:attribute name="fromFav" type="Boolean" access="public"/>
+    <aura:attribute name="fromBlack" type="Boolean" access="public"/>
+    <aura:attribute name="fromMain" type="Boolean" access="public"/>
+</aura:event>

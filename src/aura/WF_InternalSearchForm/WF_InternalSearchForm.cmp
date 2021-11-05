@@ -1,0 +1,32 @@
+<aura:component description="WF_InternalSearchForm" controller="WF_InternalController">
+    <aura:attribute name="searchItem" type="String"/>
+    <aura:attribute name="userFilms" type="object[]" access="public"/>
+    <aura:attribute name="somethingChanged" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="favChanged" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="blackChanged" type="Boolean" access="public" default="false"/>
+
+    <aura:handler name="change" value="{!v.somethingChanged}" action="{!c.onInit}"/>
+
+    <aura:registerEvent name="WF_GetMoviesAndActors" type="c:WF_GetMoviesAndActors"/>
+    <aura:registerEvent name="WF_FavOrBlackChanged" type="c:WF_FavOrBlackChanged"/>
+    <aura:registerEvent name="WF_ShowMovieDetail" type="c:WF_ShowMovieDetail"/>
+    <aura:registerEvent name="WF_ShowActorDetail" type="c:WF_ShowActorDetail"/>
+
+    <lightning:card class="slds-card">
+    <form class="slds-form-element_stacked">
+        <div class="slds-align_absolute-center">
+        <lightning:input label="" variant="label-hidden" value="{!v.searchItem}" class="input"/>
+        <lightning:button label="Search" variant="brand" class="slds-m-left_medium"
+                          onclick="{!c.getActorsAndMovies}"/>
+        </div>
+
+        <div class="slds-align_absolute-center slds-m-top_medium">
+            <lightning:button variant="brand-outline" class="slds-m-right_medium" onclick="{!c.showBlacklist}" >Show black list
+            </lightning:button>
+            <lightning:button variant="brand-outline" onclick="{!c.showFavourites}">Show favourites
+            </lightning:button>
+        </div>
+    </form>
+    </lightning:card>
+    <c:Spinner aura:id="spinner"/>
+</aura:component>

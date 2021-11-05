@@ -1,0 +1,52 @@
+<aura:component description="WF_ActorDetail" controller="WF_InternalController">
+    <aura:attribute name="actor" type="object" access="public"/>
+    <aura:attribute name="moviePage" type="Integer" access="public"/>
+    <aura:attribute name="bornDate" type="String" access="public"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:registerEvent name="WF_ShowActorDetail" type="c:WF_ShowActorDetail"/>
+    <aura:registerEvent name="WF_ShowMovieDetail" type="c:WF_ShowMovieDetail"/>
+
+    <div class="slds-card slds-m-top_medium slds-m-bottom_medium">
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+            <lightning:layout>
+                <lightning:layoutItem padding="20px">
+                    <aura:if isTrue="{!v.actor.actor.Avatar__c == 'https://image.tmdb.org/t/p/originalnull' || v.actor.actor.Avatar__c == null}">
+                        <img src="https://st4.depositphotos.com/4177785/20331/v/450/depositphotos_203312358-stock-illustration-actor-presenter-linear-icon-thin.jpg" style="max-height:600px;"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.actor.actor.Avatar__c != 'https://image.tmdb.org/t/p/originalnull'}">
+                        <img src="{!v.actor.actor.Avatar__c}" style="max-height:600px;"/>
+                    </aura:if>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="10">
+                    <div>
+                        <lightning:buttonIcon class="slds-button slds-button_icon slds-float_right"
+                                              size="large" iconName="utility:close"
+                                              title="Close" alternativeText="Close window"
+                                              onclick="{!c.closeActorDetailModal}"/>
+                    </div>
+                    <div style="margin-left:25px">
+                        <div class="slds-text-title_bold slds-m-top_large">
+                            <h1 style="font-size:26px">{!v.actor.actor.First_Name__c}&nbsp;{!v.actor.actor.Name}</h1>
+                        </div>
+                        <div class="slds-text-align_left">
+                            <aura:if isTrue="{!v.actor.actor.Born_Date__c != null}">
+                                <p><b>Born</b>&nbsp;:&nbsp;<lightning:formattedDateTime value="{!v.actor.actor.Born_Date__c}"/></p>
+                            </aura:if>
+                            <h1 style="text-align: justify;text-justify: auto;margin-right:20rem">{!v.actor.actor.biography__c}</h1>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <aura:if isTrue="{!v.actor.movies.length > 0}">
+                <div class="slds-card movies">
+                    <c:WF_MovieList movieList="{!v.actor.movies}" page="{!v.moviePage}"/>
+                </div>
+            </aura:if>
+        </div>
+    </div>
+    <c:Spinner aura:id="spinner"/>
+
+</aura:component>

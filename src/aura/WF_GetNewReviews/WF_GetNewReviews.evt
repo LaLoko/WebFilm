@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT" description="WF_GetNewReviews">
+    <aura:attribute name="reviews" type="object[]" access="global"/>
+</aura:event>

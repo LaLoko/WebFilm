@@ -1,0 +1,104 @@
+<aura:component description="WF_InternalSearch" controller="WF_InternalController" implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="movieList" type="object[]" access="public"/>
+    <aura:attribute name="favorites" type="object[]" access="public"/>
+    <aura:attribute name="blackList" type="object[]" access="public"/>
+    <aura:attribute name="actorList" type="object[]" access="public"/>
+    <aura:attribute name="userFilms" type="object[]" access="public"/>
+
+    <aura:attribute name="showFav" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="showBlacklist" type="Boolean" access="public" default="false"/>
+
+    <aura:attribute name="moviePage" type="Integer" access="public"/>
+    <aura:attribute name="actorPage" type="Integer" access="public"/>
+
+    <aura:attribute name="showMovieDetail" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="movie" type="object" access="public"/>
+
+    <aura:attribute name="showActorDetail" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="actor" type="object" access="public"/>
+
+    <aura:attribute name="somethingChanged" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="favChanged" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="blackChanged" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="fromFav" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="fromBlack" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="searchKey" type="String" access="public"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="WF_GetMoviesAndActors" event="c:WF_GetMoviesAndActors" action="{!c.onGetMoviesOrActors}"/>
+    <aura:handler name="WF_ShowMovieDetail" event="c:WF_ShowMovieDetail" action="{!c.onShowMovieDetail}"/>
+    <aura:handler name="WF_ShowActorDetail" event="c:WF_ShowActorDetail" action="{!c.onShowActorDetail}"/>
+    <aura:handler name="WF_FavOrBlackChanged" event="c:WF_FavOrBlackChanged" action="{!c.onSomethingChange}"/>
+
+    <lightning:layout verticalAlign="stretch">
+        <lightning:layoutItem size="12">
+            <div class="slds-card form">
+                <c:WF_InternalSearchForm userFilms="{!v.userFilms}" somethingChanged="{!v.somethingChanged}" favChanged="{!v.favChanged}" blackChanged="{!v.blackChanged}"/>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout>
+
+    <lightning:layout>
+        <aura:if isTrue="{!v.showActorDetail== false}">
+        <aura:if isTrue="{!v.movie != null}">
+            <div class="detail">
+                <c:WF_MovieDetail movie="{!v.movie}" fromFav="{!v.formFav}" fromBlack="{!v.formBlack}" searchKey="{!v.searchKey}" userFilms="{!v.userFilms}"/>
+            </div>
+        </aura:if>
+        </aura:if>
+    </lightning:layout>
+
+    <lightning:layout>
+        <aura:if isTrue="{!v.showMovieDetail == false}">
+        <aura:if isTrue="{!v.actor != null}">
+            <div class="detail">
+                <c:WF_ActorDetail actor="{!v.actor}"/>
+            </div>
+        </aura:if>
+        </aura:if>
+    </lightning:layout>
+
+    <aura:if isTrue="{!and(v.actor == null,v.movie == null)}">
+    <aura:if isTrue="{!and(v.showFav==false,v.showBlacklist==false)}">
+        <lightning:layout>
+        <aura:if isTrue="{!v.movieList.length > 0}">
+                <div class="slds-card movies">
+                    <c:WF_MovieList movieList="{!v.movieList}" page="{!v.moviePage}" fromMain="{!true}"/>
+                </div>
+        </aura:if>
+        </lightning:layout>
+
+        <lightning:layout>
+        <aura:if isTrue="{!v.actorList.length > 0}">
+                <div class="slds-card actors">
+                    <c:WF_ActorList actorList="{!v.actorList}" page="{!v.actorPage}"/>
+                </div>
+        </aura:if>
+        </lightning:layout>
+    </aura:if>
+        <aura:if isTrue="{!and(v.movieList.length == 0,v.actorList.length == 0)}">
+            <lightning:card class="slds-m-top_large">
+                <h1 class="slds-align_absolute-center slds-m-bottom_medium" style="font-size:24">Cannot found any Movies and Actors, change search keyword and try again</h1>
+            </lightning:card>
+        </aura:if>
+    </aura:if>
+
+    <aura:if isTrue="{!and(v.actor == null,v.movie == null)}">
+    <lightning:layout>
+    <aura:if isTrue="{!v.showFav}">
+            <div class="slds-card movies">
+                <c:WF_MovieList movieList="{!v.favorites}" fromFav="{!true}"/>
+            </div>
+    </aura:if>
+    </lightning:layout>
+    </aura:if>
+    <aura:if isTrue="{!and(v.actor == null,v.movie == null)}">
+    <lightning:layout>
+        <aura:if isTrue="{!v.showBlacklist}">
+            <div class="slds-card movies">
+                <c:WF_MovieList movieList="{!v.blackList}" fromBlack="{!true}"/>
+            </div>
+        </aura:if>
+    </lightning:layout>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="ShowDeleteModal">
+    <aura:attribute name="show" type="Boolean" access="global"/>
+    <aura:attribute name="review" type="object" access="global"/>
+</aura:event>

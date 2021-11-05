@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="WF_FavOrBlackChanged">
+    <aura:attribute name="isChanged" type="Boolean" access="public"/>
+    <aura:attribute name="favChanged" type="Boolean" access="public"/>
+    <aura:attribute name="blackChanged" type="Boolean" access="public"/>
+</aura:event>

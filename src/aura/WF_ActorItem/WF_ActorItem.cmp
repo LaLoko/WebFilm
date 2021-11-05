@@ -1,0 +1,24 @@
+<aura:component description="WF_ActorItem">
+    <aura:attribute name="actor" type="object" access="public"/>
+
+    <aura:registerEvent name="WF_ShowActorDetail" type="c:WF_ShowActorDetail"/>
+
+    <article class="slds-card" style="margin:3px 3px 15px 3px">
+        <lightning:button onclick="{!c.openActorModal}">
+            <aura:if isTrue="{!and(v.actor.actor.Avatar__c != 'https://image.tmdb.org/t/p/originalnull',v.actor.actor.Avatar__c != null)}">
+                <div style="{!'background-image: url('+v.actor.actor.Avatar__c+')'}" class="tile">
+                    <div class="lower-third">
+                        <h1 class="slds-truncate">{!v.actor.actor.First_Name__c}&nbsp;{!v.actor.actor.Name}</h1>
+                    </div>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.actor.actor.Avatar__c == 'https://image.tmdb.org/t/p/originalnull' || v.actor.actor.Avatar__c == null}">
+                <div style="{!'background-image: url(https://st4.depositphotos.com/4177785/20331/v/450/depositphotos_203312358-stock-illustration-actor-presenter-linear-icon-thin.jpg)'}" class="tile">
+                    <div class="lower-third">
+                        <h1 class="slds-truncate">{!v.actor.actor.First_Name__c}&nbsp;{!v.actor.actor.Name}</h1>
+                    </div>
+                </div>
+            </aura:if>
+        </lightning:button>
+    </article>
+</aura:component>

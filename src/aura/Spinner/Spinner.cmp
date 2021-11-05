@@ -1,0 +1,12 @@
+<aura:component description="Spinner">
+    <aura:attribute name="displaySpinner" type="Boolean" default="false"/>
+    <aura:method name="showSpinner" action="{!c.showSpinner}"/>
+    <aura:method name="hideSpinner" action="{!c.hideSpinner}"/>
+
+    <aura:if isTrue="{! v.displaySpinner }">
+<!--        <div class="slds-is-relative" style="min-height:3rem;transform: translate(0, 0);">-->
+            <lightning:spinner alternativeText="Loading" variant="brand" size="large"/>
+
+<!--        </div>-->
+    </aura:if>
+</aura:component>

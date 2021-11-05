@@ -1,0 +1,27 @@
+<aura:component description="WF_MovieItem">
+    <aura:attribute name="movie" type="object" access="public"/>
+    <aura:attribute name="fromFav" type="Boolean" access="public"/>
+    <aura:attribute name="fromBlack" type="Boolean" access="public"/>
+    <aura:attribute name="fromMain" type="Boolean" access="public"/>
+
+    <aura:registerEvent name="WF_ShowMovieDetail" type="c:WF_ShowMovieDetail"/>
+
+    <article class="slds-card card" style="margin:3px 3px 15px 3px">
+        <lightning:button onclick="{!c.openMovieDetail}">
+                        <aura:if isTrue="{!v.movie.Avatar__c != 'https://image.tmdb.org/t/p/originalnull'}">
+                            <div style="{!'background-image: url('+v.movie.Avatar__c+')'}" class="tile">
+                            <div class="lower-third">
+                            <h1 class="slds-truncate">{!v.movie.Name}</h1>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.movie.Avatar__c == 'https://image.tmdb.org/t/p/originalnull' || v.movie.Avatar__c == null}">
+                            <div style="{!'background-image: url(https://topperoo.com/wp-content/uploads/2017/07/Cake-Wrap-Film-Strip-Icing-Design.jpg)'}" class="tile">
+                                <div class="lower-third">
+                                    <h1 class="slds-truncate">{!v.movie.Name}</h1>
+                                </div>
+                            </div>
+                        </aura:if>
+        </lightning:button>
+    </article>
+</aura:component>

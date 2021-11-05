@@ -1,0 +1,13 @@
+.THIS {
+}
+.THIS .actorList{
+    max-height:520px;
+    flex-wrap: wrap;
+    margin:10px;
+}
+.THIS .allRecs{
+    margin-right:100px
+}
+.THIS .pageInfo{
+    margin-left:100px;
+}

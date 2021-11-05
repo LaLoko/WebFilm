@@ -1,0 +1,35 @@
+<aura:component description="WF_ActorList">
+    <aura:attribute name="actorList" type="object[]" access="public"/>
+    <aura:attribute name="actorToShow" type="object[]" access="public"/>
+    <aura:attribute name="page" type="Integer" access="public"/>
+    <aura:attribute name="numberOfPages" type="Integer" access="public"/>
+    <aura:attribute name="prevActive" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="nextActive" type="Boolean" access="public" default="true"/>
+    <aura:attribute name="firstActive" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="lastActive" type="Boolean" access="public" default="true"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+
+    <lightning:card title="Actors" class="slds-m-top_medium">
+    <lightning:layout class="actorList">
+        <aura:iteration items="{!v.actorToShow}" var="actor">
+            <c:WF_ActorItem actor="{!actor}"/>
+        </aura:iteration>
+    </lightning:layout>
+        <aura:if isTrue="{!v.numberOfPages > 1}">
+        <div class="slds-align_absolute-center slds-m-top_medium">
+            <h1 class="slds-text-align_left slds-float_left allRecs">Records&nbsp;found&nbsp;:&nbsp;{!v.actorList.length}</h1>
+            <lightning:button variant="brand-outline"  onclick="{!c.goToFirst}" aura:id="prevButton" disabled="{!v.firstActive == false}">First
+            </lightning:button>
+            <lightning:button variant="brand-outline" onclick="{!c.goToPrev}" aura:id="prevButton" disabled="{!v.prevActive == false}">Prev
+            </lightning:button>
+            <lightning:button variant="brand-outline" onclick="{!c.goToNext}" aura:id="nextButton" disabled="{!v.nextActive == false}">Next
+            </lightning:button>
+            <lightning:button variant="brand-outline" onclick="{!c.goToLast}" aura:id="prevButton" disabled="{!v.lastActive == false}">Last
+            </lightning:button>
+            <h1 class="slds-text-align_right pageInfo">Page&nbsp;:&nbsp;{!v.page}&nbsp;&nbsp;Pages&nbsp;left&nbsp;:&nbsp;{!v.numberOfPages-v.page}</h1>
+
+        </div>
+        </aura:if>
+    </lightning:card>
+</aura:component>

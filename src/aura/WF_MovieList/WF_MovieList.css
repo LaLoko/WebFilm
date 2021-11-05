@@ -1,0 +1,17 @@
+.THIS {
+}
+.THIS .movieList{
+    max-height:520px;
+    flex-wrap: wrap;
+    margin:10px;
+}
+.THIS .layout{
+    margin-top:10px;
+    width: 98%;
+}
+.THIS .allRecs{
+    margin-right:100px
+}
+.THIS .pageInfo{
+    margin-left:100px;
+}

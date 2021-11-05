@@ -1,0 +1,11 @@
+.THIS {
+}
+.THIS .input{
+    width: 30rem;
+}
+.THIS .fieldset{
+    margin-left:10px;
+}
+.THIS .buttons{
+    margin-right:20px;
+}
